@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://gemini.google.com/share/8969dee978a6" alt="Linux Logo" width="500"/>
+  <img src="https://github.com/vishalgunjalSWE/Linux-For-DevOps-SRE-Cloud/blob/main/assets/logo.png" alt="Linux Logo" width="auto"/>
 </p>
 
 <p align="center">
