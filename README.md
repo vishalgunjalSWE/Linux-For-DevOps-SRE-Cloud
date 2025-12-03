@@ -7,3 +7,4 @@ Dive into a complete, structured Linux curriculum crafted specifically for DevOp
 | No.  | Topic                                                      | Notes |
 |------|------------------------------------------------------------|--------------------|
 | 0    | Introduction & Our Goals                                | [Day 00](Day_00/notes_and_exercises.md) |
+| 1    | What is Linux? Kernel, Distributions, and Ecosystem        | [Day 01](Day_01/notes_and_exercises.md) |
