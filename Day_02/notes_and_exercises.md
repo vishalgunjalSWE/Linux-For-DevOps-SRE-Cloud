@@ -136,3 +136,40 @@ Practical hybrid approach (common in 2025)
 Many organizations adopt unikernels selectively: for performance/security critical microservices at the edge while keeping mainstream app stacks in containers. The research/industry trend is toward selective unikernel adoption rather than full replacement. 
 Fixstars Corporation Tech Blog
 
+2) **GPU & ARM support in hypervisors: optimizing for AI workloads**
+
+Context.
+AI workloads are driving hypervisor evolution. Two important trends are: (a) better GPU integration (vGPU, passthrough, resource reservation, and orchestration for multi-tenant AI) and (b) wider ARM adoption (servers and cloud instances using Arm/Graviton families). Vendors and open stacks are adapting to both. 
+NVIDIA Docs
++1
+
+What vendors are doing (examples & capabilities):
+
+vGPU & GPU orchestration in enterprise hypervisors. VMware and related stacks now surface features for reserving GPU slots, vGPU support for compute workloads, and deeper integrations in AI-focused releases. VMware’s Private AI/Foundation releases and vSphere updates include NVIDIA vGPU and AI-oriented features. These help guarantee GPU availability to latency-sensitive models and enable multi-tenant sharing of GPU resources. 
+Broadcom TechDocs
++1
+
+GPU virtualization models. There are several modes: full PCIe passthrough (dedicate entire GPU to a VM), vendor vGPU (time/memory sliced virtualization), and emerging disaggregated orchestration at rack scale. NVIDIA’s vGPU and NVIDIA AI Enterprise docs remain a key reference for deploying GPUs in virtualized environments. 
+NVIDIA Docs
++1
+
+ARM & heterogenous servers. Public clouds have accelerated ARM (Graviton) adoption; on-prem hypervisors and experimental arm ports (e.g., ESXi-ARM flings) demonstrate momentum for ARM in private/edge deployments. KVM-based clouds (and cloud-native orchestration) increasingly consider ARM-first instance types and tooling. 
+ARM
++1
+
+Why this matters for AI
+
+Lower cost / better power efficiency. ARM-based servers (Graviton) often offer better perf/watt for certain workloads; heterogeneous setups let operators place parts of workloads on different accelerator types. 
+Medium
+
+Operational flexibility. vGPU and GPU orchestration let many AI teams share expensive GPUs, improving utilization while preserving isolation. VMware and other hypervisor vendors are expanding feature sets to meet enterprise AI needs. 
+Broadcom TechDocs
++1
+
+Caveats and practical concerns
+
+Performance parity. Some vGPU or slicing modes may not match bare-metal performance (driver and scheduler behavior matters). Full passthrough still gives the best raw performance for large model training. Documentation and compatibility matrices (NVIDIA, VMware) are essential for production deployment choices. 
+NVIDIA Docs
++1
+
+Complex orchestration. Managing mixed fleets (x86, ARM, GPUs) increases scheduling complexity and tooling needs (node labelling, instance types, affinity rules).
