@@ -263,3 +263,41 @@ NVIDIA Docs
 Portability & fragmentation. More runtime types (unikernel, microVM, VM, container) mean more build/test permutations and potential fragmentation unless platforms provide strong abstractions. 
 Medium
 
+# Quick Peek: The Linux Boot Process
+When your VM starts, it "wakes up" in steps—watch it to feel the flow.
+
+The Linux boot is a choreographed sequence turning hardware into a usable OS. It's interview gold—expect "Walk me through it" or "Debug a hang at stage X." As of 2025, systemd dominates (95% distros), but the core flow is timeless.
+
+### Detailed Step-by-Step
+<img width="1080" height="1080" alt="Blue White Colorful Townhall Meeting Instagram Post (7)" src="https://github.com/user-attachments/assets/2b22042a-500a-4ba9-b306-48788e2d2f75" />
+
+1. **Power-On Self-Test (POST) & Firmware (BIOS/UEFI):** 
+   - Hardware powers up; firmware (BIOS legacy or UEFI modern) tests components (CPU, RAM, disks). In VMs, hypervisor emulates this (~1-2s).
+   - Locates boot device (e.g., /dev/sda in VM disk). UEFI uses GPT partitions; BIOS MBR.
+
+2. **Bootloader Stage (GRUB2):**
+   - GRUB (GNU GRand Unified Bootloader) loads from boot sector. Scans /boot/grub/grub.cfg for kernels (vmlinuz-*).
+   - Shows menu (hold Shift); user selects entry. Passes params (e.g., root=/dev/sda1) to kernel.
+   - Chains to other OSes if dual-boot. Time: <5s.
+
+3. **Kernel Initialization:**
+   - Kernel (bzImage) decompresses into RAM. Mounts initramfs (compressed FS with early drivers).
+   - Probes hardware (via modules like virtio for VMs), sets up memory (paging), mounts real root FS (/).
+   - Starts PID 1 (init). Logs to dmesg. Time: 5-20s.
+
+4. **Init System (systemd):**
+   - systemd reads /etc/fstab for mounts; parses units in /lib/systemd/system.
+   - Reaches default target (multi-user.target for servers; graphical.target for desktops).
+   - Starts services parallel (e.g., NetworkManager, sshd). Time: 10-60s.
+
+5. **User Space & Login:**
+   - getty spawns on tty/SSH; PAM authenticates user.
+   - Shell (bash) loads ~/.profile; prompt appears. GUI: display manager (gdm) starts X11/Wayland.
+
+**Total Time:** 30-90s on SSD; slower on HDD. In 2025, dracut optimizes initramfs for faster embedded boots.
+
+**VM Nuances:** Hypervisor provides virtual BIOS (SeaBIOS) or UEFI (OVMF); boot faster sans real hardware checks.
+
+**Debug Tips:** `journalctl -b` (systemd logs), `dmesg` (kernel), `systemd-analyze blame` (service timings)—interview gold for "slow boot?" scenarios.
+
+Run `systemd-analyze` after boot to see timings—fun metric!
